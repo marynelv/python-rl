@@ -3,10 +3,10 @@ pyrl.agents
 
 Reinforcement Learning agents that have been implemented in python using the RLGlue framework.
 
-The following sections describe the algorithms that are implemented in the library and provide some useful references. Different basis can be used with linear function approximators (check the specific options of the agents).
+The following sections describe the algorithms that are implemented in the library and provide some useful references. Different bases can be used with linear function approximators (check the specific options of the agents).
 
 ---
-### skeleton\_agnet.py
+### skeleton\_agent.py
 Base class for the agents. Do not use directly (picks random actions all the time).
 
 ---

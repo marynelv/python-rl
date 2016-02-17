@@ -113,14 +113,14 @@ class REINFORCE(policy_gradient):
     name = "REINFORCE"
 
     def agent_init(self,taskSpec):
-        super(REINFORCE, self).agent_init(self,taskSpec)
+        super(REINFORCE, self).agent_init(taskSpec)
         self.baseline_numerator = numpy.zeros(self.weights.shape)
         self.baseline_denom = numpy.zeros(self.weights.shape)
         self.gradient_estimate = numpy.zeros(self.weights.shape)
         self.ep_count = 0
 
     def init_parameters(self):
-        super(REINFORCE, self).init_parameters(self)
+        super(REINFORCE, self).init_parameters()
         self.num_rollouts = self.params.setdefault('num_rollouts', 5)
 
     @classmethod
@@ -145,7 +145,7 @@ class REINFORCE(policy_gradient):
 
         self.ep_count += 1
         self.Return = 0.0
-        return super(REINFORCE, self).agent_start(self, observation)
+        return super(REINFORCE, self).agent_start(observation)
 
     def update(self, phi_t, phi_tp, reward, compatFeatures):
         self.traces += compatFeatures

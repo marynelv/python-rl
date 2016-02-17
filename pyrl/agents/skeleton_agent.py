@@ -130,7 +130,7 @@ class skeleton_agent(Agent, object):
         if inMessage.lower() == "agent_diverged?":
             return str(self.has_diverged())
         else:
-            return name + " does not understand your message."
+            return self.name + " does not understand your message."
 
     def has_diverged(self):
         """Overwrite the function with one that checks the key values for your

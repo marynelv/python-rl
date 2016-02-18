@@ -88,7 +88,7 @@ def add_parameter(parser, name, min=0., max=1.0, optimize=True, **kwargs):
         if kwargs['type'] in [int, float]:
             value_range = ValueRange(min, max, dtype=kwargs['type'])
             kwargs['choices'] = value_range
-            kwargs['metavar'] = str(min) + ".." + str(max)
+            kwargs['metavar'] = str(min) + ".." + str(max) + " (default: " + str(kwargs['default']) + ")"
         elif kwargs['type'] is not bool:
             raise TypeError("String typed parameter requires 'choices' argument")
 

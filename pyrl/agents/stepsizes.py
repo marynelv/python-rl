@@ -220,7 +220,11 @@ class AlphaBounds(AdaptiveStepSize):
     def rescale_update(self, phi_t, phi_tp, delta, reward, descent_direction):
         deltaPhi = (self.gamma * phi_tp - phi_t).flatten()
         denomTerm = numpy.dot(self.traces.flatten(), deltaPhi.flatten())
-        self.alpha = numpy.min([self.alpha, 1.0/numpy.abs(denomTerm)])
+        absDenomTerm = numpy.abs(denomTerm)
+        if absDenomTerm > 1e-6:
+            self.alpha = numpy.min([self.alpha, 1.0/numpy.abs(denomTerm)])
+        else:
+            self.alpha = self.alpha
         self.step_sizes.fill(self.alpha)
         return self.step_sizes * descent_direction
 

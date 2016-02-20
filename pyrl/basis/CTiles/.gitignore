@@ -27,3 +27,9 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+# Compiled CTiles
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake

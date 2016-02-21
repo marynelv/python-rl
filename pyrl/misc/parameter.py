@@ -81,6 +81,8 @@ def add_parameter(parser, name, min=0., max=1.0, optimize=True, **kwargs):
 
     if kwargs.has_key('choices'):
         kwargs.setdefault('type', kwargs['choices'][0].__class__)
+    elif kwargs.has_key('action'):
+        pass
     else:
         # Otherwise, default to float
         kwargs.setdefault('type', float)

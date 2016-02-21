@@ -19,6 +19,8 @@ from rlglue.utils import TaskSpecVRLGLUE3
 from pyrl.rlglue.registry import register_agent
 from pyrl.misc.parameter import *
 
+import cPickle
+
 @register_agent
 class skeleton_agent(Agent, object):
     name = "Skeleton agent"
@@ -129,6 +131,18 @@ class skeleton_agent(Agent, object):
         """
         if inMessage.lower() == "agent_diverged?":
             return str(self.has_diverged())
+        elif len(inMessage) > 10 and inMessage.lower()[0:10] == "save_agent":
+            filename = inMessage.split()[1]
+            if self.saveAgent(filename) is True:
+                return "%s saved the agent state to '%s'" % (self.name,filename)
+            else:
+                return "ERROR: Could not save the agent to %s" % filename
+        elif len(inMessage) > 10 and inMessage.lower()[0:10] == "load_agent":
+            filename = inMessage.split()[1]
+            if self.saveAgent(filename) is True:
+                return "%s loaded the agent state from '%s'" % (self.name,filename)
+            else:
+                return "ERROR: Could not load the agent state from %s" % filename
         else:
             return self.name + " does not understand your message."
 
@@ -140,6 +154,36 @@ class skeleton_agent(Agent, object):
 
         return False
 
+    def loadAgent(self, filename):
+        """Unpickle the agent
+        Args:
+           filename - file with pickled agent
+        """
+        try:
+            f = open(filename,'rb')
+            tmp_dict = cPickle.load(f)
+            f.close()          
+            self.__dict__.update(tmp_dict)
+        except IOError:
+            print "Failed to load agent from %s" % filename
+            return False
+        return True
+
+    def saveAgent(self, filename):
+        """Pickle the agent
+        Args:
+           filename - filename of pickled agent
+        """
+        try:
+            f = open(filename,'wb')
+            cPickle.dump(self.__dict__,f,2)
+            f.close()
+        except IOError:
+            print "Failed to save agent to %s" % filename
+            return False
+        return True
+            
+        
 def runAgent(agent_class):
     """Use the agent_parameters function to parse command line arguments
     and run the RL agent in network mode.

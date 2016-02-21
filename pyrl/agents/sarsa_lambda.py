@@ -143,9 +143,16 @@ class sarsa_lambda(skeleton_agent):
         return numpy.where(Q >= numpy.random.random())[0][0]
 
     def egreedy(self, state, discState):
+        
         if self.randGenerator.random() < self.epsilon:
-            return self.randGenerator.randint(0,self.numActions-1)
-        return numpy.dot(self.weights[discState,:,:].T, self.basis.computeFeatures(state)).argmax()
+            selected_action = self.randGenerator.randint(0,self.numActions-1)
+        else:
+            Qapprox = numpy.dot(self.weights[discState,:,:].T, self.basis.computeFeatures(state))
+            selected_action = Qapprox.argmax()
+            max_options = numpy.where(Qapprox == Qapprox[selected_action])[0].tolist()
+            if len(max_options) > 1:
+                selected_action = max_options[self.randGenerator.randint(0,len(max_options)-1)]            
+        return selected_action
 
     def getDiscState(self, state):
         """Return the integer value representing the current discrete state.

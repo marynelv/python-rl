@@ -28,7 +28,7 @@ class sarsa_lambda(skeleton_agent):
         self.epsilon = self.params.setdefault('epsilon', 0.1)
         self.alpha = self.params.setdefault('alpha', 0.01)
         self.lmbda = self.params.setdefault('lmbda', 0.7)
-        self.gamma = self.params.setdefault('gamma', 1.0)
+        #self.gamma = self.params.setdefault('gamma', 1.0) use env discount factor
         self.fa_name = self.params.setdefault('basis', 'trivial')
         self.softmax = self.params.setdefault('softmax', False)
         self.basis = None
@@ -38,7 +38,7 @@ class sarsa_lambda(skeleton_agent):
         param_set = super(sarsa_lambda, cls).agent_parameters()
         add_parameter(param_set, "alpha", default=0.01, help="Step-size parameter")
         add_parameter(param_set, "epsilon", default=0.1, help="Exploration rate for epsilon-greedy, or rescaling factor for soft-max.")
-        add_parameter(param_set, "gamma", default=1.0, help="Discount factor")
+        # add_parameter(param_set, "gamma", default=1.0, help="Discount factor")
         add_parameter(param_set, "lmbda", default=0.7, help="Eligibility decay rate")
 
         # Parameters *NOT* used in parameter optimization
@@ -80,6 +80,8 @@ class sarsa_lambda(skeleton_agent):
         if not self.agent_supported(TaskSpec):
             print "Task Spec could not be parsed: "+taskSpecString;
             sys.exit(1)
+
+        self.gamma = TaskSpec.getDiscountFactor()
 
         self.numStates=len(TaskSpec.getDoubleObservations())
         self.discStates = numpy.array(TaskSpec.getIntObservations())

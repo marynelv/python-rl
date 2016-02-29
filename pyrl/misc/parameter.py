@@ -65,7 +65,8 @@ class ValueRange(collections.Container):
 def parameter_set(alg_name, **kwargs):
     kwargs['prog'] = alg_name
     kwargs['conflict_handler'] = 'resolve'
-    kwargs['add_help'] = False
+    if not kwargs.has_key('add_help'):
+        kwargs['add_help'] = False
     parser = argparse.ArgumentParser(**kwargs)
     parser.add_argument_group(title="optimizable",
         description="Algorithm parameters that should/can be optimized. " + \
@@ -91,8 +92,8 @@ def add_parameter(parser, name, min=0., max=1.0, optimize=True, **kwargs):
             value_range = ValueRange(min, max, dtype=kwargs['type'])
             kwargs['choices'] = value_range
             kwargs['metavar'] = str(min) + ".." + str(max) + " (default: " + str(kwargs['default']) + ")"
-        elif kwargs['type'] is not bool:
-            raise TypeError("String typed parameter requires 'choices' argument")
+        # elif kwargs['type'] is not bool:
+        #     raise TypeError("String typed parameter requires 'choices' argument")
 
     if optimize:
         i = map(lambda k: k.title, parser._action_groups).index("optimizable")

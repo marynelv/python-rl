@@ -162,7 +162,8 @@ class skeleton_agent(Agent, object):
         try:
             f = open(filename,'rb')
             tmp_dict = cPickle.load(f)
-            f.close()          
+            f.close()
+            print "Updating agent dictionary with the pickled data (%s)" % filename
             self.__dict__.update(tmp_dict)
         except IOError:
             print "Failed to load agent from %s" % filename
